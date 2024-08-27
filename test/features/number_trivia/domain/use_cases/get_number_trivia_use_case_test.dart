@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/testing.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:trivia_tdd/features/number_trivia/domain/entities/number_trivia.dart';
@@ -14,17 +13,17 @@ void main() {
   final mockNumberTriviaRepository = MockNumberTriviaRepository();
   final useCase = GetNumberTriviaUseCase(mockNumberTriviaRepository);
 
-  final int tNumber = 1;
-  final tNumberTrivia = NumberTrivia(text: 'test', number: tNumber);
+  const int tNumber = 1;
+  const tNumberTrivia = NumberTrivia(text: 'test', number: tNumber);
 
   test('should get trivia for the number from the repository', () async {
     // arrange
     when(mockNumberTriviaRepository.getConcreteNumberTrivia(any))
-        .thenAnswer((_) async => Right(tNumberTrivia));
+        .thenAnswer((_) async => const Right(tNumberTrivia));
     // act
-    final result = await useCase.execute(number: tNumber);
+    final result = await useCase(const Params(number: tNumber));
     // assert
-    expect(result, Right(tNumberTrivia));
+    expect(result, const Right(tNumberTrivia));
     verify(mockNumberTriviaRepository.getConcreteNumberTrivia(tNumber));
     verifyNoMoreInteractions(mockNumberTriviaRepository);
   });
